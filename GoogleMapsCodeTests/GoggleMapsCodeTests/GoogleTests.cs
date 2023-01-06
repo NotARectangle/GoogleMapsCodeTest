@@ -2,7 +2,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using static System.Net.WebRequestMethods;
 
-namespace TestProject1
+namespace GoogleMapsCodeTests
 {
     public class Tests
     {
@@ -20,7 +20,7 @@ namespace TestProject1
             WebDriver = GetChromeDriver();
             WebDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(160);
 
-            WebDriver.Navigate().GoToUrl(BaseUrl);
+            WebDriver.Navigate().GoToUrl(BaseUrl); 
             WebDriver.FindElement(By.CssSelector(cookieSelector)).Click();
         }
 
@@ -38,9 +38,20 @@ namespace TestProject1
         }
 
         [Test]
-        public void Test2()
+        public void Address1()
         {
-            Assert.Pass();
+            var input = WebDriver.FindElement(By.CssSelector("#searchboxinput"));
+            input.Clear();
+            input.SendKeys("Berlin Museumsinsel");
+
+            WebDriver.FindElement(By.CssSelector("#searchbox > div.pzfvzf")).Click();
+
+            //leave time for Google Maps to load
+            Thread.Sleep(5000);
+
+            var outputname = WebDriver.FindElement(By.CssSelector("#QA0Szd > div > div > div.w6VYqd > div.bJzME.tTVLSc > div > div.e07Vkf.kA9KIf > div > div > div.TIHn2 > div.tAiQdd > div.lMbq3e > div:nth-child(1) > h1 > span:nth-child(1)"));
+            
+            Assert.AreEqual("Museumsinsel", outputname.Text);
         }
 
         //Return webdriver instead of chromedriver to be flexible if you want a none chrome driver
