@@ -8,7 +8,7 @@ namespace TestProject1
     {
         private WebDriver WebDriver { get; set; } = null;
 
-        private string Driverpath = @"C:\Users\milen\source\repos\GoogleMapsCodeTest\res\chromedriver.exe";//make url less direct
+        private string Driverpath = @"..\res\chromedriver.exe";
 
         private string BaseUrl { get; set; } = "https://www.google.de/maps";
 
