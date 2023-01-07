@@ -1,5 +1,7 @@
-﻿using OpenQA.Selenium;
+﻿using NUnit.Framework;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using System.Text.RegularExpressions;
 using static System.Net.WebRequestMethods;
 
 namespace GoogleMapsCodeTests
@@ -114,9 +116,9 @@ namespace GoogleMapsCodeTests
 
             WebDriver.FindElement(By.CssSelector(magGlassSelector)).Click();
 
-            var outputname = WebDriver.FindElement(By.CssSelector(placeNameSelector));
+            var outputName = WebDriver.FindElement(By.CssSelector(placeNameSelector));
 
-            Assert.AreEqual("Kenya", outputname.Text);
+            Assert.AreEqual("Kenya", outputName.Text);
         }
 
         /// <summary>
@@ -125,22 +127,157 @@ namespace GoogleMapsCodeTests
         [Test]
         public void GoodAddress5()
         {
+            string inputString = "Washington";
+
             var input = WebDriver.FindElement(By.CssSelector(searchboxSelector));
             input.Clear();
-            input.SendKeys("Narnia");
+            input.SendKeys(inputString);
 
             WebDriver.FindElement(By.CssSelector(magGlassSelector)).Click();
 
+            //Get results element
             var resultsForPlacenameSelector = "#QA0Szd > div > div > div.w6VYqd > div.bJzME.tTVLSc > div > div.e07Vkf.kA9KIf > div > div > div.m6QErb.DxyBCb.kA9KIf.dS8AEf.ecceSd > div.m6QErb.DxyBCb.kA9KIf.dS8AEf.ecceSd";
 
             var content = WebDriver.FindElement(By.CssSelector(resultsForPlacenameSelector)).Text;
 
             //Get Text content count the number of times Place name is found in element
+            Regex goalRx = new Regex(inputString);
 
+            MatchCollection matches = goalRx.Matches(content);
 
-            Console.WriteLine(content);
+            //Count of results should be more than one, since placename occurs more than once on map
+            Assert.IsTrue(matches.Count > 1);
+        }
 
-            Assert.Pass();
+        /// <summary>
+        /// 6. searchbar input is empty string
+        /// </summary>
+        [Test]
+        public void BadAdress1()
+        {
+            string areaInformationSelector = "#passive-assist > div > div.J43RCf > div > div";
+
+            var input = WebDriver.FindElement(By.CssSelector(searchboxSelector));
+            input.Clear();
+
+            WebDriver.FindElement(By.CssSelector(magGlassSelector)).Click();
+
+            Assert.True(WebDriver.FindElement(By.CssSelector(areaInformationSelector)).Enabled);
+        }
+
+        /// <summary>
+        /// 7. no capitalization used
+        /// </summary>
+        [Test]
+        public void BadAdress2()
+        {
+            string inputString = "kenya";
+
+            var input = WebDriver.FindElement(By.CssSelector(searchboxSelector));
+            input.Clear();
+            input.SendKeys(inputString);
+
+            WebDriver.FindElement(By.CssSelector(magGlassSelector)).Click();
+
+            var outputname = WebDriver.FindElement(By.CssSelector(placeNameSelector));
+
+            Assert.AreEqual("Kenya", outputname.Text);
+        }
+        
+        /// <summary>
+        /// 8. misspelled input
+        /// </summary>
+        [Test]
+        public void BadAdress3()
+        {
+            string inputString = "muuseums izland";
+
+            var input = WebDriver.FindElement(By.CssSelector(searchboxSelector));
+            input.Clear();
+            input.SendKeys(inputString);
+
+            WebDriver.FindElement(By.CssSelector(magGlassSelector)).Click();
+
+            var outputname = WebDriver.FindElement(By.CssSelector(placeNameSelector));
+
+            Assert.AreEqual("Museum Island", outputname.Text);
+        }
+
+        /// <summary>
+        /// 9. Unknown place name
+        /// </summary>
+        [Test]
+        public void BadAdress4()
+        {
+            string inputString = "albionssb";
+
+            var input = WebDriver.FindElement(By.CssSelector(searchboxSelector));
+            input.Clear();
+            input.SendKeys(inputString);
+
+            WebDriver.FindElement(By.CssSelector(magGlassSelector)).Click();
+
+            string notFoundSelector = "#QA0Szd > div > div > div.w6VYqd > div.bJzME.tTVLSc > div > div.e07Vkf.kA9KIf > div > div > div:nth-child(2)";
+            var outputContent = WebDriver.FindElement(By.CssSelector(notFoundSelector));
+
+            //Get regex match words Google Maps, can`t find inputString in case text elements change
+            Regex notFoundRx = new Regex(@"(Google Maps)[\W\w]+(can't find " + inputString + ")");
+
+            Match notFoundMatch = notFoundRx.Match(outputContent.Text);
+
+            Assert.IsTrue(notFoundMatch.Success);
+        }
+
+        /// <summary>
+        /// 10. Html and Javascript input
+        /// </summary>
+        [Test]
+        public void BadAdress5()
+        {
+            string inputString = "<script> alert(\"Alert! Alert!\");</script>";
+
+            var input = WebDriver.FindElement(By.CssSelector(searchboxSelector));
+            input.Clear();
+            input.SendKeys(inputString);
+
+            WebDriver.FindElement(By.CssSelector(magGlassSelector)).Click();
+
+            string notFoundSelector = "#QA0Szd > div > div > div.w6VYqd > div.bJzME.tTVLSc > div > div.e07Vkf.kA9KIf > div > div > div:nth-child(2)";
+            var outputContent = WebDriver.FindElement(By.CssSelector(notFoundSelector));
+
+            //Get regex match words Google Maps, can`t find inputString in case text elements change
+            Regex notFoundRx = new Regex(@"(Google Maps).+(can't find )");
+            var outputText = outputContent.Text;
+
+            Match notFoundMatch = notFoundRx.Match(outputContent.Text);
+
+            Assert.IsTrue(notFoundMatch.Success);
+        }
+
+        /// <summary>
+        /// 11. Special character input
+        /// </summary>
+        [Test]
+        public void BadAdress6()
+        {
+            string inputString = "%&5%$%";
+
+            var input = WebDriver.FindElement(By.CssSelector(searchboxSelector));
+            input.Clear();
+            input.SendKeys(inputString);
+
+            WebDriver.FindElement(By.CssSelector(magGlassSelector)).Click();
+
+            string notFoundSelector = "#QA0Szd > div > div > div.w6VYqd > div.bJzME.tTVLSc > div > div.e07Vkf.kA9KIf > div > div > div:nth-child(2)";
+            var outputContent = WebDriver.FindElement(By.CssSelector(notFoundSelector));
+
+            //Get regex match words Google Maps, can`t find inputString in case text elements change
+            Regex notFoundRx = new Regex(@"(Google Maps)[\W\w]+(can't find %&5%\$%)");
+            var outputText = outputContent.Text;
+
+            Match notFoundMatch = notFoundRx.Match(outputContent.Text);
+
+            Assert.IsTrue(notFoundMatch.Success);
         }
 
         //Return webdriver instead of chromedriver to be flexible if you want a none chrome driver
