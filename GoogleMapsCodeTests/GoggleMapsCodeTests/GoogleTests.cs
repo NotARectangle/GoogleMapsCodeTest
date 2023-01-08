@@ -47,29 +47,27 @@ namespace GoogleMapsCodeTests
         }
 
         ///<summary>
-        ///1. Attraction address input, test if input is found
+        ///1. Landmark address input, test if input is found
         ///</summary>
         [Test]
-        public void AttractionInputTest()
+        public void LandmarkInputTest()
         {
-            var input = WebDriver.FindElement(By.CssSelector(searchboxSelector));
-            input.Clear();
-            input.SendKeys("National Museum Scotland");
-
-            WebDriver.FindElement(By.CssSelector(magGlassSelector)).Click();
-
+            AddAndSendInput("Tower of Pisa");
 
             var outputname = WebDriver.FindElement(By.CssSelector(placeNameSelector));
 
-            Assert.AreEqual("National Museum of Scotland", outputname.Text);
+            Assert.AreEqual("Leaning Tower of Pisa", outputname.Text);
         }
 
         ///<summary>
-        ///1.1 AttracttionTesting full address is displayed
+        ///1.1 Landmark tests full address is displayed
         ///</summary>
         [Test]
-        public void AttractionInput_AddressTest()
+        public void LandmarkInput_AddressTest()
         {
+            AddAndSendInput("Tower of Pisa");
+
+            //Add pattern 
 
         }
 
@@ -79,11 +77,7 @@ namespace GoogleMapsCodeTests
         [Test]
         public void StreetNameTest()
         {
-            var input = WebDriver.FindElement(By.CssSelector(searchboxSelector));
-            input.Clear();
-            input.SendKeys("Stresemannstrasse 41 Hamburg");
-
-            WebDriver.FindElement(By.CssSelector(magGlassSelector)).Click();
+            AddAndSendInput("Stresemannstrasse 41 Hamburg");
 
             var outputname = WebDriver.FindElement(By.CssSelector(placeNameSelector));
 
@@ -96,12 +90,7 @@ namespace GoogleMapsCodeTests
         [Test]
         public void AreaInputTest()
         {
-            var input = WebDriver.FindElement(By.CssSelector(searchboxSelector));
-            input.Clear();
-            input.SendKeys("Museum Island Berlin");
-
-            WebDriver.FindElement(By.CssSelector(magGlassSelector)).Click();
-
+            AddAndSendInput("Museum Island Berlin");
 
             var outputname = WebDriver.FindElement(By.CssSelector(placeNameSelector));
             
@@ -114,11 +103,7 @@ namespace GoogleMapsCodeTests
         [Test]
         public void CountryInputTest()
         {
-            var input = WebDriver.FindElement(By.CssSelector(searchboxSelector));
-            input.Clear();
-            input.SendKeys("Kenya");
-
-            WebDriver.FindElement(By.CssSelector(magGlassSelector)).Click();
+            AddAndSendInput("Kenya");
 
             var outputName = WebDriver.FindElement(By.CssSelector(placeNameSelector));
 
@@ -133,11 +118,7 @@ namespace GoogleMapsCodeTests
         {
             string inputString = "Washington";
 
-            var input = WebDriver.FindElement(By.CssSelector(searchboxSelector));
-            input.Clear();
-            input.SendKeys(inputString);
-
-            WebDriver.FindElement(By.CssSelector(magGlassSelector)).Click();
+            AddAndSendInput(inputString);
 
             //Get results element
             var resultsForPlacenameSelector = "#QA0Szd > div > div > div.w6VYqd > div.bJzME.tTVLSc > div > div.e07Vkf.kA9KIf > div > div > div.m6QErb.DxyBCb.kA9KIf.dS8AEf.ecceSd > div.m6QErb.DxyBCb.kA9KIf.dS8AEf.ecceSd";
@@ -161,10 +142,7 @@ namespace GoogleMapsCodeTests
         {
             string areaInformationSelector = "#passive-assist > div > div.J43RCf > div > div";
 
-            var input = WebDriver.FindElement(By.CssSelector(searchboxSelector));
-            input.Clear();
-
-            WebDriver.FindElement(By.CssSelector(magGlassSelector)).Click();
+            AddAndSendInput(string.Empty);
 
             Assert.True(WebDriver.FindElement(By.CssSelector(areaInformationSelector)).Enabled);
         }
@@ -177,11 +155,7 @@ namespace GoogleMapsCodeTests
         {
             string inputString = "kenya";
 
-            var input = WebDriver.FindElement(By.CssSelector(searchboxSelector));
-            input.Clear();
-            input.SendKeys(inputString);
-
-            WebDriver.FindElement(By.CssSelector(magGlassSelector)).Click();
+            AddAndSendInput(inputString);
 
             var outputname = WebDriver.FindElement(By.CssSelector(placeNameSelector));
 
@@ -196,11 +170,7 @@ namespace GoogleMapsCodeTests
         {
             string inputString = "muuseums izland";
 
-            var input = WebDriver.FindElement(By.CssSelector(searchboxSelector));
-            input.Clear();
-            input.SendKeys(inputString);
-
-            WebDriver.FindElement(By.CssSelector(magGlassSelector)).Click();
+            AddAndSendInput(inputString);
 
             var outputname = WebDriver.FindElement(By.CssSelector(placeNameSelector));
 
@@ -215,11 +185,7 @@ namespace GoogleMapsCodeTests
         {
             string inputString = "albionssb";
 
-            var input = WebDriver.FindElement(By.CssSelector(searchboxSelector));
-            input.Clear();
-            input.SendKeys(inputString);
-
-            WebDriver.FindElement(By.CssSelector(magGlassSelector)).Click();
+            AddAndSendInput(inputString);
 
             string notFoundSelector = "#QA0Szd > div > div > div.w6VYqd > div.bJzME.tTVLSc > div > div.e07Vkf.kA9KIf > div > div > div:nth-child(2)";
             var outputContent = WebDriver.FindElement(By.CssSelector(notFoundSelector));
@@ -240,11 +206,7 @@ namespace GoogleMapsCodeTests
         {
             string inputString = "<script> alert(\"Alert! Alert!\");</script>";
 
-            var input = WebDriver.FindElement(By.CssSelector(searchboxSelector));
-            input.Clear();
-            input.SendKeys(inputString);
-
-            WebDriver.FindElement(By.CssSelector(magGlassSelector)).Click();
+            AddAndSendInput(inputString);
 
             string notFoundSelector = "#QA0Szd > div > div > div.w6VYqd > div.bJzME.tTVLSc > div > div.e07Vkf.kA9KIf > div > div > div:nth-child(2)";
             var outputContent = WebDriver.FindElement(By.CssSelector(notFoundSelector));
@@ -266,11 +228,7 @@ namespace GoogleMapsCodeTests
         {
             string inputString = "%&5%$%";
 
-            var input = WebDriver.FindElement(By.CssSelector(searchboxSelector));
-            input.Clear();
-            input.SendKeys(inputString);
-
-            WebDriver.FindElement(By.CssSelector(magGlassSelector)).Click();
+            AddAndSendInput(inputString);
 
             string notFoundSelector = "#QA0Szd > div > div > div.w6VYqd > div.bJzME.tTVLSc > div > div.e07Vkf.kA9KIf > div > div > div:nth-child(2)";
             var outputContent = WebDriver.FindElement(By.CssSelector(notFoundSelector));
@@ -292,6 +250,15 @@ namespace GoogleMapsCodeTests
             options.AddArgument("--lang=en-ca");
 
             return new ChromeDriver(Driverpath, options, TimeSpan.FromSeconds(300));
+        }
+
+        private void AddAndSendInput(string inputString)
+        {
+            var input = WebDriver.FindElement(By.CssSelector(searchboxSelector));
+            input.Clear();
+            input.SendKeys(inputString);
+
+            WebDriver.FindElement(By.CssSelector(magGlassSelector)).Click();
         }
     }
 }
