@@ -1,6 +1,8 @@
 ﻿using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.DevTools.V106.Network;
+using System.Globalization;
 using System.Text.RegularExpressions;
 using static System.Net.WebRequestMethods;
 
@@ -71,26 +73,81 @@ namespace GoogleMapsCodeTests
 
             AddAndSendInput(inputString);
 
-            Assert.AreEqual("Piazza del Duomo, 56126 Pisa PI, Italy", getAdressContent());
+            Assert.AreEqual("Piazza del Duomo, 56126 Pisa PI, Italy", GetAdressContent());
         }
 
         ///<summary>
-        ///1.2 Landmark tests Photo is showing
+        ///1.2 Landmark tests, Photo is showing
         ///</summary>
         [Test]
-        public void LandmarkInput_HeaderPhoto()
+        public void LandmarkInput_HeaderPhotoTest()
         {
             string inputString = "Tower of Pisa";
             AddAndSendInput(inputString);
 
-            string PhotoSelector = "#QA0Szd > div > div > div.w6VYqd > div.bJzME.tTVLSc > div > div.e07Vkf.kA9KIf > div > div > div.ZKCDEc > div.RZ66Rb.FgCUCc > button > img";
+            Assert.IsTrue(IsHeaderPhotoDisplaying());
+        }
 
-            //Needed to add more time for information to appear
-            Thread.Sleep(5000);
 
-            var content = WebDriver.FindElement(By.CssSelector(PhotoSelector));
+        /// <summary>
+        /// 1.3 Landmark tests, info section is showing
+        /// </summary>
+        [Test]
+        public void LandmarkInput_InfoSectionTest()
+        {
+            string inputString = "Tower of Pisa";
+            AddAndSendInput(inputString);
 
-            Assert.IsTrue(content.Displayed);
+            Assert.IsTrue(IsPlaceInfoDisplaying());
+        }
+
+        /// <summary>
+        /// 1.4 Landmark tests, Action is enabled and displayed
+        /// </summary>
+        [Test]
+        public void LandmarkInput_ActionBarActiveTest()
+        {
+            string inputString = "Tower of Pisa";
+            AddAndSendInput(inputString);
+
+            Assert.IsTrue(IsActionBarDisplaying());
+        }
+
+
+        /// <summary>
+        /// 1.5 Landmark test, landmark admission information displayed
+        /// </summary>
+        [Test]
+        public void LandmarkInput_AdmissionTest()
+        {
+            string inputString = "Tower of Pisa";
+            AddAndSendInput(inputString);
+
+            Assert.IsTrue(IsAdmissionsInfoDisplaying());
+        }
+
+        /// <summary>
+        /// 1.6 Landmark test, Google reviews showing
+        /// </summary>
+        [Test]
+        public void LandmarkInput_ReviewStarsTest()
+        {
+            string inputString = "Tower of Pisa";
+            AddAndSendInput(inputString);
+
+            Assert.IsTrue(IsGoogleReviewsActive());
+        }
+
+        /// <summary>
+        /// 1.7 Landmark test, Popular times element active
+        /// </summary>
+        [Test]
+        public void LandmarkInput_PopularTimesTest()
+        {
+            string inputString = "Tower of Pisa";
+            AddAndSendInput(inputString);
+
+            Assert.IsTrue(IsPopularTimesDisplayed());
         }
 
         ///<summary>
@@ -205,7 +262,7 @@ namespace GoogleMapsCodeTests
         [Test]
         public void UnknownPlaceInputTest()
         {
-            string inputString = "albionssb";
+            string inputString = "albon ssbdds";
 
             AddAndSendInput(inputString);
 
@@ -283,7 +340,7 @@ namespace GoogleMapsCodeTests
             WebDriver.FindElement(By.CssSelector(magGlassSelector)).Click();
         }
 
-        public string getAdressContent()
+        private string GetAdressContent()
         {
             string addressContentSelector = "#QA0Szd > div > div > div.w6VYqd > div.bJzME.tTVLSc > div > div.e07Vkf.kA9KIf > div > div > div:nth-child(11) > div:nth-child(3) > button > div.AeaXub > div.rogA2c";
 
@@ -299,6 +356,169 @@ namespace GoogleMapsCodeTests
             {
                 return string.Empty;
             }
+        }
+
+        private bool IsHeaderPhotoDisplaying()
+        {
+            string PhotoSelector = "#QA0Szd > div > div > div.w6VYqd > div.bJzME.tTVLSc > div > div.e07Vkf.kA9KIf > div > div > div.ZKCDEc > div.RZ66Rb.FgCUCc > button > img";
+
+            //Needed to add more time for information to appear
+            Thread.Sleep(5000);
+
+            var content = WebDriver.FindElement(By.CssSelector(PhotoSelector));
+
+            if (content != null) {
+                return content.Displayed;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Return true if the place info section is displaying and text is contained in it
+        /// </summary>
+        private bool IsPlaceInfoDisplaying()
+        {
+            string infoTextSelector = "#QA0Szd > div > div > div.w6VYqd > div.bJzME.tTVLSc > div > div.e07Vkf.kA9KIf > div > div > div.y0K5Df > button > div > div:nth-child(1) > div.PYvSYb > span";
+
+            var content = WebDriver.FindElement(By.CssSelector(infoTextSelector));
+
+            if (content == null)
+            {
+                return false;
+            }
+            else if(content.Displayed == false) 
+            {
+                return false;
+            }
+            else
+            {
+                string infoText = content.Text;
+                if (infoText != string.Empty)
+                {
+                    if (infoText.Length > 0) {
+                        return true;
+                    }
+                    else
+                    { 
+                        return false; 
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Returns true if the actionbar is enabled and is displayed
+        /// </summary>
+        private bool IsActionBarDisplaying()
+        {
+            string actionBarSelector = "#QA0Szd > div > div > div.w6VYqd > div.bJzME.tTVLSc > div > div.e07Vkf.kA9KIf > div > div > div:nth-child(4)";
+        
+            var content = WebDriver.FindElement(By.CssSelector(actionBarSelector));
+
+            if (content == null) 
+            {
+                return false;
+            }
+            else if (content.Enabled && content.Displayed) 
+            { 
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Returns true if the admissionsInfo is enabled and is displayed
+        /// </summary>
+        private bool IsAdmissionsInfoDisplaying()
+        {
+            string admissionsInfoSelector = "#QA0Szd > div > div > div.w6VYqd > div.bJzME.tTVLSc > div > div.e07Vkf.kA9KIf > div > div > div:nth-child(8)";
+
+            var content = WebDriver.FindElement(By.CssSelector(admissionsInfoSelector));
+
+            if (content == null)
+            {
+                return false;
+            }
+            else if (content.Enabled && content.Displayed)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Returns true if the review stars are enabled and can be used to observe reviews
+        /// </summary>
+        private bool IsGoogleReviewsActive()
+        {
+            string reviewStarsSelector = "#QA0Szd > div > div > div.w6VYqd > div.bJzME.tTVLSc > div > div.e07Vkf.kA9KIf > div > div > div.TIHn2 > div.tAiQdd > div.lMbq3e > div.LBgpqf > div > div.fontBodyMedium.dmRWX > div.F7nice.mmu3tf";
+
+            string reviewPanelHeaderSelector = "#QA0Szd > div > div > div.w6VYqd > div.bJzME.tTVLSc > div > div.e07Vkf.kA9KIf > div > div > div.BHymgf.eiJcBe > div > div > div.cO45I > div > div > span";
+
+            var content = WebDriver.FindElement(By.CssSelector(reviewStarsSelector));
+
+            if (content == null)
+            {
+                return false;
+            }
+            else if (content.Enabled && content.Displayed)
+            {
+                content.Click();
+
+                var reviewHeader = WebDriver.FindElement(By.CssSelector(reviewPanelHeaderSelector));
+                
+                if (reviewHeader == null)
+                {
+                    return false;
+                }
+                else if (string.IsNullOrEmpty(reviewHeader.Text))
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+               
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private bool IsPopularTimesDisplayed()
+        {
+            string popularTimesSelector = "#QA0Szd > div > div > div.w6VYqd > div.bJzME.tTVLSc > div > div.e07Vkf.kA9KIf > div > div > div.UmE4Qe";
+
+            var content = WebDriver.FindElement(By.CssSelector(popularTimesSelector));
+
+            if (content == null)
+            {
+                return false;
+            }
+            else if (content.Enabled && content.Displayed)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
         }
     }
 }
