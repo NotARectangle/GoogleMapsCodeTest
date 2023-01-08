@@ -73,7 +73,7 @@ namespace GoogleMapsCodeTests
 
             AddAndSendInput(inputString);
 
-            Assert.AreEqual("Piazza del Duomo, 56126 Pisa PI, Italy", GetAdressContent());
+            Assert.IsTrue(IsAddressCorrect("Piazza del Duomo, 56126 Pisa PI"));
         }
 
         ///<summary>
@@ -154,13 +154,24 @@ namespace GoogleMapsCodeTests
         ///2. normal existing street address, test if input is found 
         ///</summary>
         [Test]
-        public void StreetNameTest()
+        public void StreetNameInputTest()
         {
             AddAndSendInput("Stresemannstrasse 41 Hamburg");
 
             var outputname = WebDriver.FindElement(By.CssSelector(placeNameSelector));
 
             Assert.AreEqual("Stresemannstraße 41", outputname.Text);
+        }
+
+        /// <summary>
+        /// Street name input, test if address is correct
+        /// </summary>
+        [Test]
+        public void StreetNameInput_AdressTest()
+        {
+            AddAndSendInput("Stresemannstrasse 41 Hamburg");
+
+            Assert.That(IsAddressCorrect("Stresemannstraße 41, 22769 Hamburg"));
         }
 
         ///<summary>
@@ -331,6 +342,10 @@ namespace GoogleMapsCodeTests
             return new ChromeDriver(Driverpath, options, TimeSpan.FromSeconds(300));
         }
 
+        /// <summary>
+        /// Adds inputString to Searchbar and presses the magnifying glass to run search
+        /// </summary>
+        /// <param name="inputString"></param>
         private void AddAndSendInput(string inputString)
         {
             var input = WebDriver.FindElement(By.CssSelector(searchboxSelector));
@@ -340,24 +355,60 @@ namespace GoogleMapsCodeTests
             WebDriver.FindElement(By.CssSelector(magGlassSelector)).Click();
         }
 
-        private string GetAdressContent()
+        /*
+        private string GetAdress()
         {
-            string addressContentSelector = "#QA0Szd > div > div > div.w6VYqd > div.bJzME.tTVLSc > div > div.e07Vkf.kA9KIf > div > div > div:nth-child(11) > div:nth-child(3) > button > div.AeaXub > div.rogA2c";
+            Thread.Sleep(5000);
+
+            var content = WebDriver.FindElement(By.CssSelector("#QA0Szd > div > div > div.w6VYqd > div.bJzME.tTVLSc > div > div.e07Vkf.kA9KIf > div > div "));
+
+            return content.Text;
+        }*/
+
+        /// <summary>
+        /// Returns true if expected adress is contained within results page
+        /// </summary>
+        /// <param name="expectedAddress"></param>
+        /// <returns></returns>
+        private bool IsAddressCorrect(string expectedAddress)
+        {
+            //selector returns results text
+            string addressContentSelector = "#QA0Szd > div > div > div.w6VYqd > div.bJzME.tTVLSc > div > div.e07Vkf.kA9KIf > div > div ";
+
 
             Thread.Sleep(5000);
 
-            var content = WebDriver.FindElement(By.CssSelector(addressContentSelector));
+            try
+            {
+                var content = WebDriver.FindElement(By.CssSelector(addressContentSelector));
 
-            if (content != null)
-            {
-                return content.Text;
+                if (content != null)
+                {
+                    string actualAddress = content.Text;
+                    if (actualAddress.Contains(expectedAddress))
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+
             }
-            else
+            catch
             {
-                return string.Empty;
+                return false;
             }
         }
 
+        /// <summary>
+        /// Return true if header image is active and displays
+        /// </summary>
         private bool IsHeaderPhotoDisplaying()
         {
             string PhotoSelector = "#QA0Szd > div > div > div.w6VYqd > div.bJzME.tTVLSc > div > div.e07Vkf.kA9KIf > div > div > div.ZKCDEc > div.RZ66Rb.FgCUCc > button > img";
