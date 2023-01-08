@@ -37,6 +37,9 @@ namespace GoogleMapsCodeTests
         }
 
         [Test]
+        ///<summary>
+        ///0. First sanity check, Page is loaded and page name appears
+        /// </summary>
         public void PageNameTest()
         {
             //WebDriver.Navigate().GoToUrl(BaseUrl);
@@ -44,10 +47,10 @@ namespace GoogleMapsCodeTests
         }
 
         ///<summary>
-        ///Good adress input, attraction
+        ///1. Attraction address input, test if input is found
         ///</summary>
         [Test]
-        public void GoodAddress1()
+        public void AttractionInputTest()
         {
             var input = WebDriver.FindElement(By.CssSelector(searchboxSelector));
             input.Clear();
@@ -62,18 +65,19 @@ namespace GoogleMapsCodeTests
         }
 
         ///<summary>
-        ///Testing full address is displayed
+        ///1.1 AttracttionTesting full address is displayed
         ///</summary>
         [Test]
-        public void GoodAddress1_1()
+        public void AttractionInput_AddressTest()
         {
+
         }
 
         ///<summary>
-        ///Good Address Input, normal existing street
+        ///2. normal existing street address, test if input is found 
         ///</summary>
         [Test]
-        public void GoodAddress2()
+        public void StreetNameTest()
         {
             var input = WebDriver.FindElement(By.CssSelector(searchboxSelector));
             input.Clear();
@@ -87,10 +91,10 @@ namespace GoogleMapsCodeTests
         }
 
         ///<summary>
-        ///Good Address Input, Part of a Town
+        ///3. Search input is an existing area
         ///</summary>
         [Test]
-        public void GoodAddress3()
+        public void AreaInputTest()
         {
             var input = WebDriver.FindElement(By.CssSelector(searchboxSelector));
             input.Clear();
@@ -105,10 +109,10 @@ namespace GoogleMapsCodeTests
         }
 
         ///<summary>
-        ///Good Address Input, Country Input
+        ///4. Search input is an existing country
         ///</summary>
         [Test]
-        public void GoodAddress4()
+        public void CountryInputTest()
         {
             var input = WebDriver.FindElement(By.CssSelector(searchboxSelector));
             input.Clear();
@@ -122,10 +126,10 @@ namespace GoogleMapsCodeTests
         }
 
         /// <summary>
-        /// Good Address input, multiple outcomes option
+        /// 5. Address input leaves room for multiple search outcomes
         /// </summary>
         [Test]
-        public void GoodAddress5()
+        public void MultiplePossibleOutcomesTest()
         {
             string inputString = "Washington";
 
@@ -153,7 +157,7 @@ namespace GoogleMapsCodeTests
         /// 6. searchbar input is empty string
         /// </summary>
         [Test]
-        public void BadAdress1()
+        public void EmptyStringInputTest()
         {
             string areaInformationSelector = "#passive-assist > div > div.J43RCf > div > div";
 
@@ -169,7 +173,7 @@ namespace GoogleMapsCodeTests
         /// 7. no capitalization used
         /// </summary>
         [Test]
-        public void BadAdress2()
+        public void NoCapitalLettersInputTest()
         {
             string inputString = "kenya";
 
@@ -188,7 +192,7 @@ namespace GoogleMapsCodeTests
         /// 8. misspelled input
         /// </summary>
         [Test]
-        public void BadAdress3()
+        public void MisspelledInputTest()
         {
             string inputString = "muuseums izland";
 
@@ -207,7 +211,7 @@ namespace GoogleMapsCodeTests
         /// 9. Unknown place name
         /// </summary>
         [Test]
-        public void BadAdress4()
+        public void UnknownPlaceInputTest()
         {
             string inputString = "albionssb";
 
@@ -232,7 +236,7 @@ namespace GoogleMapsCodeTests
         /// 10. Html and Javascript input
         /// </summary>
         [Test]
-        public void BadAdress5()
+        public void HTMLInputTest()
         {
             string inputString = "<script> alert(\"Alert! Alert!\");</script>";
 
@@ -258,7 +262,7 @@ namespace GoogleMapsCodeTests
         /// 11. Special character input
         /// </summary>
         [Test]
-        public void BadAdress6()
+        public void SpecialCharacterInputTest()
         {
             string inputString = "%&5%$%";
 
