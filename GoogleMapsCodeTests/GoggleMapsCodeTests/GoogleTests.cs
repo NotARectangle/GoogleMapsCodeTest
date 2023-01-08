@@ -164,7 +164,7 @@ namespace GoogleMapsCodeTests
         }
 
         /// <summary>
-        /// Street name input, test if address is correct
+        /// 2.1 Street name input, test if address is correct
         /// </summary>
         [Test]
         public void StreetNameInput_AdressTest()
@@ -172,6 +172,28 @@ namespace GoogleMapsCodeTests
             AddAndSendInput("Stresemannstrasse 41 Hamburg");
 
             Assert.That(IsAddressCorrect("Stresemannstraße 41, 22769 Hamburg"));
+        }
+
+        /// <summary>
+        /// 2.2 Street name input, test if image is displayed
+        /// </summary>
+        [Test]
+        public void StreetNameInput_HeaderPhotoTest()
+        {
+            AddAndSendInput("Stresemannstrasse 41 Hamburg");
+
+            Assert.That(IsHeaderPhotoDisplaying());
+        }
+
+        /// <summary>
+        /// 2.3 Street name input, test if action bar shows
+        /// </summary>
+        [Test]
+        public void StreetNameInput_ActionBarTest()
+        {
+            AddAndSendInput("Stresemannstrasse 41 Hamburg");
+
+            Assert.That(IsActionBarDisplaying());
         }
 
         ///<summary>
@@ -188,16 +210,105 @@ namespace GoogleMapsCodeTests
         }
 
         ///<summary>
+        ///3.1 Area search input, header image show
+        ///</summary>
+        [Test]
+        public void AreaInput_HeaderPhotoTest()
+        {
+            AddAndSendInput("Museum Island Berlin");
+
+            Assert.That(IsHeaderPhotoDisplaying());
+        }
+
+        ///<summary>
+        ///3.2 Area search input, information shows
+        ///</summary>
+        [Test]
+        public void AreaInput_InfoSectionTest()
+        {
+            AddAndSendInput("Museum Island Berlin");
+
+            Assert.That(IsPlaceInfoDisplaying());
+        }
+
+        ///<summary>
+        ///3.3 Area search input, action bar is enabled and displays
+        ///</summary>
+        [Test]
+        public void AreaInput_ActionBarTest()
+        {
+            AddAndSendInput("Museum Island Berlin");
+
+            Assert.That(IsActionBarDisplaying());
+        }
+
+        ///<summary>
         ///4. Search input is an existing country
         ///</summary>
         [Test]
         public void CountryInputTest()
         {
-            AddAndSendInput("Kenya");
+            AddAndSendInput("Uruguay");
 
             var outputName = WebDriver.FindElement(By.CssSelector(placeNameSelector));
 
-            Assert.AreEqual("Kenya", outputName.Text);
+            Assert.AreEqual("Uruguay", outputName.Text);
+        }
+
+        /// <summary>
+        /// country search input, header image shows
+        /// </summary>
+        [Test]
+        public void CountryInput_HeaderPhotoTest()
+        {
+            AddAndSendInput("Uruguay");
+
+            Assert.That(IsHeaderPhotoDisplaying());
+        }
+
+        /// <summary>
+        /// country search input, Quick facts show
+        /// </summary>
+        [Test]
+        public void CountryInput_QuickfactsTest()
+        {
+            AddAndSendInput("Uruguay");
+
+            string textOutputSelector = "#QA0Szd > div > div > div.w6VYqd > div.bJzME.tTVLSc > div > div.e07Vkf.kA9KIf > div > div ";
+
+            bool found = false;
+
+            try 
+            {            
+            string pageText = WebDriver.FindElement(By.CssSelector(textOutputSelector)).Text;          
+            
+
+            if (string.IsNullOrEmpty(pageText) != true)
+                {
+                    if(pageText.Contains("Quick facts"))
+                    {
+                        found = true;
+                    }
+                }
+
+            }
+            catch
+            {
+                found = false;
+            }
+
+            Assert.That(found);
+        }
+
+        /// <summary>
+        /// country search input, action bar is enabled and displayed
+        /// </summary>
+        [Test]
+        public void CountryInput_ActionBarTest()
+        {
+            AddAndSendInput("Uruguay");
+
+            Assert.That(IsActionBarDisplaying());
         }
 
         /// <summary>
@@ -243,13 +354,13 @@ namespace GoogleMapsCodeTests
         [Test]
         public void NoCapitalLettersInputTest()
         {
-            string inputString = "kenya";
+            string inputString = "uruguay";
 
             AddAndSendInput(inputString);
 
             var outputname = WebDriver.FindElement(By.CssSelector(placeNameSelector));
 
-            Assert.AreEqual("Kenya", outputname.Text);
+            Assert.AreEqual("Uruguay", outputname.Text);
         }
         
         /// <summary>
@@ -432,7 +543,7 @@ namespace GoogleMapsCodeTests
         /// </summary>
         private bool IsPlaceInfoDisplaying()
         {
-            string infoTextSelector = "#QA0Szd > div > div > div.w6VYqd > div.bJzME.tTVLSc > div > div.e07Vkf.kA9KIf > div > div > div.y0K5Df > button > div > div:nth-child(1) > div.PYvSYb > span";
+            string infoTextSelector = "#QA0Szd > div > div > div.w6VYqd > div.bJzME.tTVLSc > div > div.e07Vkf.kA9KIf > div > div > div.y0K5Df";
 
             var content = WebDriver.FindElement(By.CssSelector(infoTextSelector));
 
