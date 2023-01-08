@@ -8,7 +8,7 @@ namespace GoogleMapsCodeTests
 {
     public class Tests
     {
-        private WebDriver WebDriver { get; set; } = null;
+        protected WebDriver WebDriver { get; set; } = null;
 
         private string Driverpath = @"..\res\chromedriver.exe";
 
@@ -52,7 +52,9 @@ namespace GoogleMapsCodeTests
         [Test]
         public void LandmarkInputTest()
         {
-            AddAndSendInput("Tower of Pisa");
+            string inputString = "Tower of Pisa";
+
+            AddAndSendInput(inputString);
 
             var outputname = WebDriver.FindElement(By.CssSelector(placeNameSelector));
 
@@ -65,10 +67,30 @@ namespace GoogleMapsCodeTests
         [Test]
         public void LandmarkInput_AddressTest()
         {
-            AddAndSendInput("Tower of Pisa");
+            string inputString = "Tower of Pisa";
 
-            //Add pattern 
+            AddAndSendInput(inputString);
 
+            Assert.AreEqual("Piazza del Duomo, 56126 Pisa PI, Italy", getAdressContent());
+        }
+
+        ///<summary>
+        ///1.2 Landmark tests Photo is showing
+        ///</summary>
+        [Test]
+        public void LandmarkInput_HeaderPhoto()
+        {
+            string inputString = "Tower of Pisa";
+            AddAndSendInput(inputString);
+
+            string PhotoSelector = "#QA0Szd > div > div > div.w6VYqd > div.bJzME.tTVLSc > div > div.e07Vkf.kA9KIf > div > div > div.ZKCDEc > div.RZ66Rb.FgCUCc > button > img";
+
+            //Needed to add more time for information to appear
+            Thread.Sleep(5000);
+
+            var content = WebDriver.FindElement(By.CssSelector(PhotoSelector));
+
+            Assert.IsTrue(content.Displayed);
         }
 
         ///<summary>
@@ -259,6 +281,24 @@ namespace GoogleMapsCodeTests
             input.SendKeys(inputString);
 
             WebDriver.FindElement(By.CssSelector(magGlassSelector)).Click();
+        }
+
+        public string getAdressContent()
+        {
+            string addressContentSelector = "#QA0Szd > div > div > div.w6VYqd > div.bJzME.tTVLSc > div > div.e07Vkf.kA9KIf > div > div > div:nth-child(11) > div:nth-child(3) > button > div.AeaXub > div.rogA2c";
+
+            Thread.Sleep(5000);
+
+            var content = WebDriver.FindElement(By.CssSelector(addressContentSelector));
+
+            if (content != null)
+            {
+                return content.Text;
+            }
+            else
+            {
+                return string.Empty;
+            }
         }
     }
 }
