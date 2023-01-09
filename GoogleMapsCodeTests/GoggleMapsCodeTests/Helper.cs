@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GoogleMapsCodeTests
 {
-    internal class Helper
+    public class Helper
     {
 
         private WebDriver webDriver;
@@ -32,24 +32,61 @@ namespace GoogleMapsCodeTests
         /// Adds inputString to Searchbar and presses the magnifying glass to run search
         /// </summary>
         /// <param name="inputString"></param>
-        public void AddAndSendInput(string inputString)
+        public bool AddAndSendInput(string inputString)
         {
-            var input = webDriver.FindElement(By.CssSelector(searchboxSelector));
-            input.Clear();
-            input.SendKeys(inputString);
+            try
+            { 
+            
+                var input = webDriver.FindElement(By.CssSelector(searchboxSelector));
+                var magGlass = webDriver.FindElement(By.CssSelector(magGlassSelector));
 
-            webDriver.FindElement(By.CssSelector(magGlassSelector)).Click();
+                    if (input != null && magGlass != null) 
+                    { 
+                        input.Clear();
+                        input.SendKeys(inputString);
+
+                        magGlass.Click();
+
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+
+            }
+            catch 
+            {
+                return false;
+            }
         }
 
-        /*
-        private string GetAdress()
+        public bool IsOutputCorrect(string outputString)
         {
-            Thread.Sleep(5000);
+            try { 
 
-            var content = WebDriver.FindElement(By.CssSelector("#QA0Szd > div > div > div.w6VYqd > div.bJzME.tTVLSc > div > div.e07Vkf.kA9KIf > div > div "));
+                var outputname = webDriver.FindElement(By.CssSelector(placeNameSelector));
 
-            return content.Text;
-        }*/
+                if (outputname == null || string.IsNullOrEmpty(outputname.Text))
+                {
+                    return false;
+                }
+                else if (outputname.Text.Contains(outputString))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+
+                }
+            catch 
+            { 
+                return false; 
+            }
+
+        }
 
         /// <summary>
         /// Returns true if expected adress is contained within results page
