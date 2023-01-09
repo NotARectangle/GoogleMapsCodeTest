@@ -396,7 +396,7 @@ namespace GoogleMapsCodeTests
 
             var outputname = WebDriver.FindElement(By.CssSelector(placeNameSelector));
 
-            Assert.IsTrue(help.IsOutputCorrect(misspelledInput));
+            Assert.IsTrue(help.IsOutputCorrect(areaNameOutput));
         }
 
         /// <summary>
@@ -405,13 +405,13 @@ namespace GoogleMapsCodeTests
         [Test]
         public void UnknownPlaceInputTest()
         {
-            help.AddAndSendInput(misspelledInput);
+            help.AddAndSendInput(unknownPlace);
 
             string notFoundSelector = "#QA0Szd > div > div > div.w6VYqd > div.bJzME.tTVLSc > div > div.e07Vkf.kA9KIf > div > div > div:nth-child(2)";
             var outputContent = WebDriver.FindElement(By.CssSelector(notFoundSelector));
 
             //Get regex match words Google Maps, can`t find inputString in case text elements change
-            Regex notFoundRx = new Regex(@"(Google Maps)[\W\w]+(can't find " + misspelledInput + ")");
+            Regex notFoundRx = new Regex(@"(Google Maps)[\W\w]+(can't find " + unknownPlace + ")");
 
             Match notFoundMatch = notFoundRx.Match(outputContent.Text);
 
