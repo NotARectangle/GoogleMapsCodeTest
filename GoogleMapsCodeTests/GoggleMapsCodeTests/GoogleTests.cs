@@ -81,11 +81,9 @@ namespace GoogleMapsCodeTests
         public void LandmarkInputTest()
         {
 
-            help.AddAndSendInput(landmarkInput);
-            
-       //     var outputname = WebDriver.FindElement(By.CssSelector(placeNameSelector));
+            help.AddAndSendInput(landmarkInput);            
 
-            Assert.AreEqual(true, true);
+            Assert.IsTrue(help.IsOutputCorrect(landmarkOutput));
         }
 
         ///<summary>
@@ -129,8 +127,7 @@ namespace GoogleMapsCodeTests
         [Test]
         public void LandmarkInput_ActionBarActiveTest()
         {
-            string inputString = "Tower of Pisa";
-            help.AddAndSendInput(inputString);
+            help.AddAndSendInput(landmarkInput);
 
             Assert.IsTrue(help.IsActionBarDisplaying());
         }
@@ -142,8 +139,7 @@ namespace GoogleMapsCodeTests
         [Test]
         public void LandmarkInput_AdmissionTest()
         {
-            string inputString = "Tower of Pisa";
-            help.AddAndSendInput(inputString);
+            help.AddAndSendInput(landmarkInput);
 
             Assert.IsTrue(help.IsAdmissionsInfoDisplaying());
         }
@@ -154,8 +150,7 @@ namespace GoogleMapsCodeTests
         [Test]
         public void LandmarkInput_ReviewStarsTest()
         {
-            string inputString = "Tower of Pisa";
-            help.AddAndSendInput(inputString);
+            help.AddAndSendInput(landmarkInput);
 
             Assert.IsTrue(help.IsGoogleReviewsActive());
         }
@@ -166,8 +161,7 @@ namespace GoogleMapsCodeTests
         [Test]
         public void LandmarkInput_PopularTimesTest()
         {
-            string inputString = "Tower of Pisa";
-            help.AddAndSendInput(inputString);
+            help.AddAndSendInput(landmarkInput);
 
             Assert.IsTrue(help.IsPopularTimesDisplayed());
         }
@@ -178,11 +172,11 @@ namespace GoogleMapsCodeTests
         [Test]
         public void StreetNameInputTest()
         {
-            help.AddAndSendInput("Stresemannstrasse 41 Hamburg");
+            help.AddAndSendInput(streetAddressInput);
 
-            var outputname = WebDriver.FindElement(By.CssSelector(placeNameSelector));
+            //var outputname = WebDriver.FindElement(By.CssSelector(placeNameSelector));
 
-            Assert.AreEqual("Stresemannstraße 41", outputname.Text);
+            Assert.IsTrue(help.IsOutputCorrect(streetAdresssOutput));
         }
 
         /// <summary>
@@ -191,9 +185,9 @@ namespace GoogleMapsCodeTests
         [Test]
         public void StreetNameInput_AdressTest()
         {
-            help.AddAndSendInput("Stresemannstrasse 41 Hamburg");
+            help.AddAndSendInput(streetAddressInput);
 
-            Assert.That(help.IsAddressCorrect("Stresemannstraße 41, 22769 Hamburg"));
+            Assert.That(help.IsAddressCorrect(streetAdresssAddress));
         }
 
         /// <summary>
@@ -202,7 +196,7 @@ namespace GoogleMapsCodeTests
         [Test]
         public void StreetNameInput_HeaderPhotoTest()
         {
-            help.AddAndSendInput("Stresemannstrasse 41 Hamburg");
+            help.AddAndSendInput(streetAddressInput);
 
             Assert.That(help.IsHeaderPhotoDisplaying());
         }
@@ -213,7 +207,7 @@ namespace GoogleMapsCodeTests
         [Test]
         public void StreetNameInput_ActionBarTest()
         {
-            help.AddAndSendInput("Stresemannstrasse 41 Hamburg");
+            help.AddAndSendInput(streetAddressInput);
 
             Assert.That(help.IsActionBarDisplaying());
         }
@@ -224,11 +218,9 @@ namespace GoogleMapsCodeTests
         [Test]
         public void AreaInputTest()
         {
-            help.AddAndSendInput("Museumisland Berlin");
-
-            var outputname = WebDriver.FindElement(By.CssSelector(placeNameSelector));
+            help.AddAndSendInput(areaNameInput);
             
-            Assert.AreEqual("Museum Island", outputname.Text);
+            Assert.IsTrue(help.IsOutputCorrect(areaNameOutput));
         }
 
         ///<summary>
@@ -237,7 +229,7 @@ namespace GoogleMapsCodeTests
         [Test]
         public void AreaInput_HeaderPhotoTest()
         {
-            help.AddAndSendInput("Museumisland Berlin");
+            help.AddAndSendInput(areaNameInput);
 
             Assert.That(help.IsHeaderPhotoDisplaying());
         }
@@ -248,7 +240,7 @@ namespace GoogleMapsCodeTests
         [Test]
         public void AreaInput_InfoSectionTest()
         {
-            help.AddAndSendInput("Museumisland Berlin");
+            help.AddAndSendInput(areaNameInput);
 
             Assert.That(help.IsPlaceInfoDisplaying());
         }
@@ -259,7 +251,7 @@ namespace GoogleMapsCodeTests
         [Test]
         public void AreaInput_ActionBarTest()
         {
-            help.AddAndSendInput("Museumsinsel Berlin");
+            help.AddAndSendInput(areaNameInput);
 
             Assert.That(help.IsActionBarDisplaying());
         }
@@ -270,11 +262,11 @@ namespace GoogleMapsCodeTests
         [Test]
         public void CountryInputTest()
         {
-            help.AddAndSendInput("Uruguay");
+            help.AddAndSendInput(countryNameInput);
 
             var outputName = WebDriver.FindElement(By.CssSelector(placeNameSelector));
 
-            Assert.AreEqual("Uruguay", outputName.Text);
+            Assert.IsTrue(help.IsOutputCorrect(countryNameInput));
         }
 
         /// <summary>
@@ -283,7 +275,7 @@ namespace GoogleMapsCodeTests
         [Test]
         public void CountryInput_HeaderPhotoTest()
         {
-            help.AddAndSendInput("Uruguay");
+            help.AddAndSendInput(countryNameInput);
 
             Assert.That(help.IsHeaderPhotoDisplaying());
         }
@@ -294,7 +286,7 @@ namespace GoogleMapsCodeTests
         [Test]
         public void CountryInput_QuickfactsTest()
         {
-            help.AddAndSendInput("Uruguay");
+            help.AddAndSendInput(countryNameInput);
 
             string textOutputSelector = "#QA0Szd > div > div > div.w6VYqd > div.bJzME.tTVLSc > div > div.e07Vkf.kA9KIf > div > div ";
 
@@ -328,7 +320,7 @@ namespace GoogleMapsCodeTests
         [Test]
         public void CountryInput_ActionBarTest()
         {
-            help.AddAndSendInput("Uruguay");
+            help.AddAndSendInput(countryNameInput);
 
             Assert.That(help.IsActionBarDisplaying());
         }
@@ -339,9 +331,8 @@ namespace GoogleMapsCodeTests
         [Test]
         public void MultiplePossibleOutcomesTest()
         {
-            string inputString = "Washington";
 
-            help.AddAndSendInput(inputString);
+            help.AddAndSendInput(mutipleOutcomesInput);
 
             //Get results element
             var resultsForPlacenameSelector = "#QA0Szd > div > div > div.w6VYqd > div.bJzME.tTVLSc > div > div.e07Vkf.kA9KIf > div > div > div.m6QErb.DxyBCb.kA9KIf.dS8AEf.ecceSd > div.m6QErb.DxyBCb.kA9KIf.dS8AEf.ecceSd";
@@ -349,7 +340,7 @@ namespace GoogleMapsCodeTests
             var content = WebDriver.FindElement(By.CssSelector(resultsForPlacenameSelector)).Text;
 
             //Get Text content count the number of times Place name is found in element
-            Regex goalRx = new Regex(inputString);
+            Regex goalRx = new Regex(mutipleOutcomesInput);
 
             MatchCollection matches = goalRx.Matches(content);
 
@@ -363,11 +354,21 @@ namespace GoogleMapsCodeTests
         [Test]
         public void EmptyStringInputTest()
         {
+
             string areaInformationSelector = "#passive-assist > div > div.J43RCf > div > div";
 
             help.AddAndSendInput(string.Empty);
 
-            Assert.True(WebDriver.FindElement(By.CssSelector(areaInformationSelector)).Enabled);
+            try { 
+            bool areaInformationEnabled = WebDriver.FindElement(By.CssSelector(areaInformationSelector)).Enabled;
+
+            Assert.IsTrue(areaInformationEnabled);
+
+            }
+            catch
+            {
+                Assert.Fail();
+            }
         }
 
         /// <summary>
@@ -382,7 +383,7 @@ namespace GoogleMapsCodeTests
 
             var outputname = WebDriver.FindElement(By.CssSelector(placeNameSelector));
 
-            Assert.AreEqual(countryNameInput, outputname.Text);
+            Assert.IsTrue(help.IsOutputCorrect(countryNameInput));
         }
         
         /// <summary>
@@ -391,13 +392,11 @@ namespace GoogleMapsCodeTests
         [Test]
         public void MisspelledInputTest()
         {
-            string inputString = "muuseums izland";
-
-            help.AddAndSendInput(inputString);
+            help.AddAndSendInput(misspelledInput);
 
             var outputname = WebDriver.FindElement(By.CssSelector(placeNameSelector));
 
-            Assert.AreEqual("Museum Island", outputname.Text);
+            Assert.IsTrue(help.IsOutputCorrect(misspelledInput));
         }
 
         /// <summary>
@@ -406,15 +405,13 @@ namespace GoogleMapsCodeTests
         [Test]
         public void UnknownPlaceInputTest()
         {
-            string inputString = "albon ssbdds";
-
-            help.AddAndSendInput(inputString);
+            help.AddAndSendInput(misspelledInput);
 
             string notFoundSelector = "#QA0Szd > div > div > div.w6VYqd > div.bJzME.tTVLSc > div > div.e07Vkf.kA9KIf > div > div > div:nth-child(2)";
             var outputContent = WebDriver.FindElement(By.CssSelector(notFoundSelector));
 
             //Get regex match words Google Maps, can`t find inputString in case text elements change
-            Regex notFoundRx = new Regex(@"(Google Maps)[\W\w]+(can't find " + inputString + ")");
+            Regex notFoundRx = new Regex(@"(Google Maps)[\W\w]+(can't find " + misspelledInput + ")");
 
             Match notFoundMatch = notFoundRx.Match(outputContent.Text);
 
@@ -427,9 +424,7 @@ namespace GoogleMapsCodeTests
         [Test]
         public void HTMLInputTest()
         {
-            string inputString = "<script> alert(\"Alert! Alert!\");</script>";
-
-            help.AddAndSendInput(inputString);
+            help.AddAndSendInput(htmlInput);
 
             string notFoundSelector = "#QA0Szd > div > div > div.w6VYqd > div.bJzME.tTVLSc > div > div.e07Vkf.kA9KIf > div > div > div:nth-child(2)";
             var outputContent = WebDriver.FindElement(By.CssSelector(notFoundSelector));
@@ -449,9 +444,8 @@ namespace GoogleMapsCodeTests
         [Test]
         public void SpecialCharacterInputTest()
         {
-            string inputString = "%&5%$%";
 
-            help.AddAndSendInput(inputString);
+            help.AddAndSendInput(specialCharacters);
 
             string notFoundSelector = "#QA0Szd > div > div > div.w6VYqd > div.bJzME.tTVLSc > div > div.e07Vkf.kA9KIf > div > div > div:nth-child(2)";
             var outputContent = WebDriver.FindElement(By.CssSelector(notFoundSelector));
