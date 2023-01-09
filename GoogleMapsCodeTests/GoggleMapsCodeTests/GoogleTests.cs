@@ -10,26 +10,29 @@ namespace GoogleMapsCodeTests
 {
     public class Tests
     {
+        private Helper help= null;
         protected WebDriver WebDriver { get; set; } = null;
 
-        private string Driverpath = @"..\res\chromedriver.exe";
+        private string driverpath = @"..\res\chromedriver.exe";
 
         private string BaseUrl { get; set; } = "https://www.google.com/maps";
 
         private string cookieSelector = "#yDmH0d > c-wiz > div > div > div > div.NIoIEf > div.G4njw > div.AIC7ge > div.CxJub > div.VtwTSb > form:nth-child(2)";
 
-        private string searchboxSelector = "#searchboxinput";
-        private string magGlassSelector = "#searchbox > div.pzfvzf";
+     //   private string searchboxSelector = "#searchboxinput";
+     //   private string magGlassSelector = "#searchbox > div.pzfvzf";
         private string placeNameSelector = "#QA0Szd > div > div > div.w6VYqd > div.bJzME.tTVLSc > div > div.e07Vkf.kA9KIf > div > div > div.TIHn2 > div.tAiQdd > div.lMbq3e > div:nth-child(1) > h1 > span:nth-child(1)";
 
         [SetUp]
         public void Setup()
         {
             WebDriver = GetChromeDriver();
-            WebDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(160);
+            WebDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(100);
 
             WebDriver.Navigate().GoToUrl(BaseUrl);
             WebDriver.FindElement(By.CssSelector(cookieSelector)).Click();
+
+            help = new Helper(WebDriver);
         }
 
         [TearDown]
@@ -56,7 +59,7 @@ namespace GoogleMapsCodeTests
         {
             string inputString = "Tower of Pisa";
 
-            AddAndSendInput(inputString);
+            help.AddAndSendInput(inputString);
 
             var outputname = WebDriver.FindElement(By.CssSelector(placeNameSelector));
 
@@ -71,9 +74,9 @@ namespace GoogleMapsCodeTests
         {
             string inputString = "Tower of Pisa";
 
-            AddAndSendInput(inputString);
+            help.AddAndSendInput(inputString);
 
-            Assert.IsTrue(IsAddressCorrect("Piazza del Duomo, 56126 Pisa PI"));
+            Assert.IsTrue(help.IsAddressCorrect("Piazza del Duomo, 56126 Pisa PI"));
         }
 
         ///<summary>
@@ -83,9 +86,9 @@ namespace GoogleMapsCodeTests
         public void LandmarkInput_HeaderPhotoTest()
         {
             string inputString = "Tower of Pisa";
-            AddAndSendInput(inputString);
+            help.AddAndSendInput(inputString);
 
-            Assert.IsTrue(IsHeaderPhotoDisplaying());
+            Assert.IsTrue(help.IsHeaderPhotoDisplaying());
         }
 
 
@@ -96,9 +99,9 @@ namespace GoogleMapsCodeTests
         public void LandmarkInput_InfoSectionTest()
         {
             string inputString = "Tower of Pisa";
-            AddAndSendInput(inputString);
+            help.AddAndSendInput(inputString);
 
-            Assert.IsTrue(IsPlaceInfoDisplaying());
+            Assert.IsTrue(help.IsPlaceInfoDisplaying());
         }
 
         /// <summary>
@@ -108,9 +111,9 @@ namespace GoogleMapsCodeTests
         public void LandmarkInput_ActionBarActiveTest()
         {
             string inputString = "Tower of Pisa";
-            AddAndSendInput(inputString);
+            help.AddAndSendInput(inputString);
 
-            Assert.IsTrue(IsActionBarDisplaying());
+            Assert.IsTrue(help.IsActionBarDisplaying());
         }
 
 
@@ -121,9 +124,9 @@ namespace GoogleMapsCodeTests
         public void LandmarkInput_AdmissionTest()
         {
             string inputString = "Tower of Pisa";
-            AddAndSendInput(inputString);
+            help.AddAndSendInput(inputString);
 
-            Assert.IsTrue(IsAdmissionsInfoDisplaying());
+            Assert.IsTrue(help.IsAdmissionsInfoDisplaying());
         }
 
         /// <summary>
@@ -133,9 +136,9 @@ namespace GoogleMapsCodeTests
         public void LandmarkInput_ReviewStarsTest()
         {
             string inputString = "Tower of Pisa";
-            AddAndSendInput(inputString);
+            help.AddAndSendInput(inputString);
 
-            Assert.IsTrue(IsGoogleReviewsActive());
+            Assert.IsTrue(help.IsGoogleReviewsActive());
         }
 
         /// <summary>
@@ -145,9 +148,9 @@ namespace GoogleMapsCodeTests
         public void LandmarkInput_PopularTimesTest()
         {
             string inputString = "Tower of Pisa";
-            AddAndSendInput(inputString);
+            help.AddAndSendInput(inputString);
 
-            Assert.IsTrue(IsPopularTimesDisplayed());
+            Assert.IsTrue(help.IsPopularTimesDisplayed());
         }
 
         ///<summary>
@@ -156,7 +159,7 @@ namespace GoogleMapsCodeTests
         [Test]
         public void StreetNameInputTest()
         {
-            AddAndSendInput("Stresemannstrasse 41 Hamburg");
+            help.AddAndSendInput("Stresemannstrasse 41 Hamburg");
 
             var outputname = WebDriver.FindElement(By.CssSelector(placeNameSelector));
 
@@ -169,9 +172,9 @@ namespace GoogleMapsCodeTests
         [Test]
         public void StreetNameInput_AdressTest()
         {
-            AddAndSendInput("Stresemannstrasse 41 Hamburg");
+            help.AddAndSendInput("Stresemannstrasse 41 Hamburg");
 
-            Assert.That(IsAddressCorrect("Stresemannstraße 41, 22769 Hamburg"));
+            Assert.That(help.IsAddressCorrect("Stresemannstraße 41, 22769 Hamburg"));
         }
 
         /// <summary>
@@ -180,9 +183,9 @@ namespace GoogleMapsCodeTests
         [Test]
         public void StreetNameInput_HeaderPhotoTest()
         {
-            AddAndSendInput("Stresemannstrasse 41 Hamburg");
+            help.AddAndSendInput("Stresemannstrasse 41 Hamburg");
 
-            Assert.That(IsHeaderPhotoDisplaying());
+            Assert.That(help.IsHeaderPhotoDisplaying());
         }
 
         /// <summary>
@@ -191,9 +194,9 @@ namespace GoogleMapsCodeTests
         [Test]
         public void StreetNameInput_ActionBarTest()
         {
-            AddAndSendInput("Stresemannstrasse 41 Hamburg");
+            help.AddAndSendInput("Stresemannstrasse 41 Hamburg");
 
-            Assert.That(IsActionBarDisplaying());
+            Assert.That(help.IsActionBarDisplaying());
         }
 
         ///<summary>
@@ -202,7 +205,7 @@ namespace GoogleMapsCodeTests
         [Test]
         public void AreaInputTest()
         {
-            AddAndSendInput("Museum Island Berlin");
+            help.AddAndSendInput("Museum Island Berlin");
 
             var outputname = WebDriver.FindElement(By.CssSelector(placeNameSelector));
             
@@ -215,9 +218,9 @@ namespace GoogleMapsCodeTests
         [Test]
         public void AreaInput_HeaderPhotoTest()
         {
-            AddAndSendInput("Museum Island Berlin");
+            help.AddAndSendInput("Museum Island Berlin");
 
-            Assert.That(IsHeaderPhotoDisplaying());
+            Assert.That(help.IsHeaderPhotoDisplaying());
         }
 
         ///<summary>
@@ -226,9 +229,9 @@ namespace GoogleMapsCodeTests
         [Test]
         public void AreaInput_InfoSectionTest()
         {
-            AddAndSendInput("Museum Island Berlin");
+            help.AddAndSendInput("Museum Island Berlin");
 
-            Assert.That(IsPlaceInfoDisplaying());
+            Assert.That(help.IsPlaceInfoDisplaying());
         }
 
         ///<summary>
@@ -237,9 +240,9 @@ namespace GoogleMapsCodeTests
         [Test]
         public void AreaInput_ActionBarTest()
         {
-            AddAndSendInput("Museum Island Berlin");
+            help.AddAndSendInput("Museum Island Berlin");
 
-            Assert.That(IsActionBarDisplaying());
+            Assert.That(help.IsActionBarDisplaying());
         }
 
         ///<summary>
@@ -248,7 +251,7 @@ namespace GoogleMapsCodeTests
         [Test]
         public void CountryInputTest()
         {
-            AddAndSendInput("Uruguay");
+            help.AddAndSendInput("Uruguay");
 
             var outputName = WebDriver.FindElement(By.CssSelector(placeNameSelector));
 
@@ -261,9 +264,9 @@ namespace GoogleMapsCodeTests
         [Test]
         public void CountryInput_HeaderPhotoTest()
         {
-            AddAndSendInput("Uruguay");
+            help.AddAndSendInput("Uruguay");
 
-            Assert.That(IsHeaderPhotoDisplaying());
+            Assert.That(help.IsHeaderPhotoDisplaying());
         }
 
         /// <summary>
@@ -272,7 +275,7 @@ namespace GoogleMapsCodeTests
         [Test]
         public void CountryInput_QuickfactsTest()
         {
-            AddAndSendInput("Uruguay");
+            help.AddAndSendInput("Uruguay");
 
             string textOutputSelector = "#QA0Szd > div > div > div.w6VYqd > div.bJzME.tTVLSc > div > div.e07Vkf.kA9KIf > div > div ";
 
@@ -306,9 +309,9 @@ namespace GoogleMapsCodeTests
         [Test]
         public void CountryInput_ActionBarTest()
         {
-            AddAndSendInput("Uruguay");
+            help.AddAndSendInput("Uruguay");
 
-            Assert.That(IsActionBarDisplaying());
+            Assert.That(help.IsActionBarDisplaying());
         }
 
         /// <summary>
@@ -319,7 +322,7 @@ namespace GoogleMapsCodeTests
         {
             string inputString = "Washington";
 
-            AddAndSendInput(inputString);
+            help.AddAndSendInput(inputString);
 
             //Get results element
             var resultsForPlacenameSelector = "#QA0Szd > div > div > div.w6VYqd > div.bJzME.tTVLSc > div > div.e07Vkf.kA9KIf > div > div > div.m6QErb.DxyBCb.kA9KIf.dS8AEf.ecceSd > div.m6QErb.DxyBCb.kA9KIf.dS8AEf.ecceSd";
@@ -343,7 +346,7 @@ namespace GoogleMapsCodeTests
         {
             string areaInformationSelector = "#passive-assist > div > div.J43RCf > div > div";
 
-            AddAndSendInput(string.Empty);
+            help.AddAndSendInput(string.Empty);
 
             Assert.True(WebDriver.FindElement(By.CssSelector(areaInformationSelector)).Enabled);
         }
@@ -356,7 +359,7 @@ namespace GoogleMapsCodeTests
         {
             string inputString = "uruguay";
 
-            AddAndSendInput(inputString);
+            help.AddAndSendInput(inputString);
 
             var outputname = WebDriver.FindElement(By.CssSelector(placeNameSelector));
 
@@ -371,7 +374,7 @@ namespace GoogleMapsCodeTests
         {
             string inputString = "muuseums izland";
 
-            AddAndSendInput(inputString);
+            help.AddAndSendInput(inputString);
 
             var outputname = WebDriver.FindElement(By.CssSelector(placeNameSelector));
 
@@ -386,7 +389,7 @@ namespace GoogleMapsCodeTests
         {
             string inputString = "albon ssbdds";
 
-            AddAndSendInput(inputString);
+            help.AddAndSendInput(inputString);
 
             string notFoundSelector = "#QA0Szd > div > div > div.w6VYqd > div.bJzME.tTVLSc > div > div.e07Vkf.kA9KIf > div > div > div:nth-child(2)";
             var outputContent = WebDriver.FindElement(By.CssSelector(notFoundSelector));
@@ -407,7 +410,7 @@ namespace GoogleMapsCodeTests
         {
             string inputString = "<script> alert(\"Alert! Alert!\");</script>";
 
-            AddAndSendInput(inputString);
+            help.AddAndSendInput(inputString);
 
             string notFoundSelector = "#QA0Szd > div > div > div.w6VYqd > div.bJzME.tTVLSc > div > div.e07Vkf.kA9KIf > div > div > div:nth-child(2)";
             var outputContent = WebDriver.FindElement(By.CssSelector(notFoundSelector));
@@ -429,7 +432,7 @@ namespace GoogleMapsCodeTests
         {
             string inputString = "%&5%$%";
 
-            AddAndSendInput(inputString);
+            help.AddAndSendInput(inputString);
 
             string notFoundSelector = "#QA0Szd > div > div > div.w6VYqd > div.bJzME.tTVLSc > div > div.e07Vkf.kA9KIf > div > div > div:nth-child(2)";
             var outputContent = WebDriver.FindElement(By.CssSelector(notFoundSelector));
@@ -450,237 +453,10 @@ namespace GoogleMapsCodeTests
 
             options.AddArgument("--lang=en-ca");
 
-            return new ChromeDriver(Driverpath, options, TimeSpan.FromSeconds(300));
+            return new ChromeDriver(driverpath, options, TimeSpan.FromSeconds(300));
         }
 
-        /// <summary>
-        /// Adds inputString to Searchbar and presses the magnifying glass to run search
-        /// </summary>
-        /// <param name="inputString"></param>
-        private void AddAndSendInput(string inputString)
-        {
-            var input = WebDriver.FindElement(By.CssSelector(searchboxSelector));
-            input.Clear();
-            input.SendKeys(inputString);
 
-            WebDriver.FindElement(By.CssSelector(magGlassSelector)).Click();
-        }
-
-        /*
-        private string GetAdress()
-        {
-            Thread.Sleep(5000);
-
-            var content = WebDriver.FindElement(By.CssSelector("#QA0Szd > div > div > div.w6VYqd > div.bJzME.tTVLSc > div > div.e07Vkf.kA9KIf > div > div "));
-
-            return content.Text;
-        }*/
-
-        /// <summary>
-        /// Returns true if expected adress is contained within results page
-        /// </summary>
-        /// <param name="expectedAddress"></param>
-        /// <returns></returns>
-        private bool IsAddressCorrect(string expectedAddress)
-        {
-            //selector returns results text
-            string addressContentSelector = "#QA0Szd > div > div > div.w6VYqd > div.bJzME.tTVLSc > div > div.e07Vkf.kA9KIf > div > div ";
-
-
-            Thread.Sleep(5000);
-
-            try
-            {
-                var content = WebDriver.FindElement(By.CssSelector(addressContentSelector));
-
-                if (content != null)
-                {
-                    string actualAddress = content.Text;
-                    if (actualAddress.Contains(expectedAddress))
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-                else
-                {
-                    return false;
-                }
-
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Return true if header image is active and displays
-        /// </summary>
-        private bool IsHeaderPhotoDisplaying()
-        {
-            string PhotoSelector = "#QA0Szd > div > div > div.w6VYqd > div.bJzME.tTVLSc > div > div.e07Vkf.kA9KIf > div > div > div.ZKCDEc > div.RZ66Rb.FgCUCc > button > img";
-
-            //Needed to add more time for information to appear
-            Thread.Sleep(5000);
-
-            var content = WebDriver.FindElement(By.CssSelector(PhotoSelector));
-
-            if (content != null) {
-                return content.Displayed;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Return true if the place info section is displaying and text is contained in it
-        /// </summary>
-        private bool IsPlaceInfoDisplaying()
-        {
-            string infoTextSelector = "#QA0Szd > div > div > div.w6VYqd > div.bJzME.tTVLSc > div > div.e07Vkf.kA9KIf > div > div > div.y0K5Df";
-
-            var content = WebDriver.FindElement(By.CssSelector(infoTextSelector));
-
-            if (content == null)
-            {
-                return false;
-            }
-            else if(content.Displayed == false) 
-            {
-                return false;
-            }
-            else
-            {
-                string infoText = content.Text;
-                if (infoText != string.Empty)
-                {
-                    if (infoText.Length > 0) {
-                        return true;
-                    }
-                    else
-                    { 
-                        return false; 
-                    }
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Returns true if the actionbar is enabled and is displayed
-        /// </summary>
-        private bool IsActionBarDisplaying()
-        {
-            string actionBarSelector = "#QA0Szd > div > div > div.w6VYqd > div.bJzME.tTVLSc > div > div.e07Vkf.kA9KIf > div > div > div:nth-child(4)";
-        
-            var content = WebDriver.FindElement(By.CssSelector(actionBarSelector));
-
-            if (content == null) 
-            {
-                return false;
-            }
-            else if (content.Enabled && content.Displayed) 
-            { 
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Returns true if the admissionsInfo is enabled and is displayed
-        /// </summary>
-        private bool IsAdmissionsInfoDisplaying()
-        {
-            string admissionsInfoSelector = "#QA0Szd > div > div > div.w6VYqd > div.bJzME.tTVLSc > div > div.e07Vkf.kA9KIf > div > div > div:nth-child(8)";
-
-            var content = WebDriver.FindElement(By.CssSelector(admissionsInfoSelector));
-
-            if (content == null)
-            {
-                return false;
-            }
-            else if (content.Enabled && content.Displayed)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Returns true if the review stars are enabled and can be used to observe reviews
-        /// </summary>
-        private bool IsGoogleReviewsActive()
-        {
-            string reviewStarsSelector = "#QA0Szd > div > div > div.w6VYqd > div.bJzME.tTVLSc > div > div.e07Vkf.kA9KIf > div > div > div.TIHn2 > div.tAiQdd > div.lMbq3e > div.LBgpqf > div > div.fontBodyMedium.dmRWX > div.F7nice.mmu3tf";
-
-            string reviewPanelHeaderSelector = "#QA0Szd > div > div > div.w6VYqd > div.bJzME.tTVLSc > div > div.e07Vkf.kA9KIf > div > div > div.BHymgf.eiJcBe > div > div > div.cO45I > div > div > span";
-
-            var content = WebDriver.FindElement(By.CssSelector(reviewStarsSelector));
-
-            if (content == null)
-            {
-                return false;
-            }
-            else if (content.Enabled && content.Displayed)
-            {
-                content.Click();
-
-                var reviewHeader = WebDriver.FindElement(By.CssSelector(reviewPanelHeaderSelector));
-                
-                if (reviewHeader == null)
-                {
-                    return false;
-                }
-                else if (string.IsNullOrEmpty(reviewHeader.Text))
-                {
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
-               
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        private bool IsPopularTimesDisplayed()
-        {
-            string popularTimesSelector = "#QA0Szd > div > div > div.w6VYqd > div.bJzME.tTVLSc > div > div.e07Vkf.kA9KIf > div > div > div.UmE4Qe";
-
-            var content = WebDriver.FindElement(By.CssSelector(popularTimesSelector));
-
-            if (content == null)
-            {
-                return false;
-            }
-            else if (content.Enabled && content.Displayed)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-
-        }
     }
+    
 }
