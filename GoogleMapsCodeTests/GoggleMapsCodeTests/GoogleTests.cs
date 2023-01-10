@@ -365,15 +365,7 @@ namespace GoogleMapsCodeTests
         {
             help.AddAndSendInput(unknownPlace);
 
-            string notFoundSelector = "#QA0Szd > div > div > div.w6VYqd > div.bJzME.tTVLSc > div > div.e07Vkf.kA9KIf > div > div > div:nth-child(2)";
-            var outputContent = WebDriver.FindElement(By.CssSelector(notFoundSelector));
-
-            //Get regex match words Google Maps, can`t find inputString in case text elements change
-            Regex notFoundRx = new Regex(@"(Google Maps)[\W\w]+(can't find " + unknownPlace + ")");
-
-            Match notFoundMatch = notFoundRx.Match(outputContent.Text);
-
-            Assert.IsTrue(notFoundMatch.Success);
+            Assert.IsTrue(help.IsInputNotFound());
         }
 
         /// <summary>
@@ -384,16 +376,7 @@ namespace GoogleMapsCodeTests
         {
             help.AddAndSendInput(htmlInput);
 
-            string notFoundSelector = "#QA0Szd > div > div > div.w6VYqd > div.bJzME.tTVLSc > div > div.e07Vkf.kA9KIf > div > div > div:nth-child(2)";
-            var outputContent = WebDriver.FindElement(By.CssSelector(notFoundSelector));
-
-            //Get regex match words Google Maps, can`t find inputString in case text elements change
-            Regex notFoundRx = new Regex(@"(Google Maps).+(can't find )");
-            var outputText = outputContent.Text;
-
-            Match notFoundMatch = notFoundRx.Match(outputContent.Text);
-
-            Assert.IsTrue(notFoundMatch.Success);
+            Assert.IsTrue(help.IsInputNotFound());
         }
 
         /// <summary>
@@ -405,16 +388,7 @@ namespace GoogleMapsCodeTests
 
             help.AddAndSendInput(specialCharacters);
 
-            string notFoundSelector = "#QA0Szd > div > div > div.w6VYqd > div.bJzME.tTVLSc > div > div.e07Vkf.kA9KIf > div > div > div:nth-child(2)";
-            var outputContent = WebDriver.FindElement(By.CssSelector(notFoundSelector));
-
-            //Get regex match words Google Maps, can`t find inputString in case text elements change
-            Regex notFoundRx = new Regex(@"(Google Maps)[\W\w]+(can't find %&5%\$%)");
-            var outputText = outputContent.Text;
-
-            Match notFoundMatch = notFoundRx.Match(outputContent.Text);
-
-            Assert.IsTrue(notFoundMatch.Success);
+            Assert.IsTrue(help.IsInputNotFound());
         }
 
         //Return webdriver instead of chromedriver to be flexible if you want a none chrome driver
