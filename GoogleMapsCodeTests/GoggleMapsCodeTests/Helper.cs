@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
+using NUnit.Framework.Internal;
 
 namespace GoogleMapsCodeTests
 {
@@ -13,6 +14,7 @@ namespace GoogleMapsCodeTests
     {
 
         private WebDriver webDriver;
+        private string screenshotFolder = @"..\..\..\..\..\res\Screenshots\";
 
         private string searchboxSelector = "#searchboxinput";
         private string magGlassSelector = "#searchbox > div.pzfvzf";
@@ -31,10 +33,8 @@ namespace GoogleMapsCodeTests
         /// Adds inputString to Searchbar and presses the magnifying glass to run search
         /// </summary>
         /// <param name="inputString"></param>
-        public bool AddAndSendInput(string inputString)
+        public void AddAndSendInput(string inputString)
         {
-            try
-            { 
             
                 var input = webDriver.FindElement(By.CssSelector(searchboxSelector));
                 var magGlass = webDriver.FindElement(By.CssSelector(magGlassSelector));
@@ -45,20 +45,9 @@ namespace GoogleMapsCodeTests
                         input.SendKeys(inputString);
 
                         magGlass.Click();
-
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
+                }
 
             }
-            catch 
-            {
-                return false;
-            }
-        }
 
         /// <summary>
         /// Returns true if output same as parameter given
@@ -444,6 +433,19 @@ namespace GoogleMapsCodeTests
             {
                 return inputNotFound;
             }
+        }
+
+        public void TakeScreenShot(string driverType, string testName)
+        {
+            Screenshot screenshot = (webDriver as ITakesScreenshot).GetScreenshot();
+            DateTime time = DateTime.Now;
+
+            string timeString = time.ToString();
+            timeString = timeString.Replace(":", "_");
+            
+            string screenshotFileAndPlaceName = screenshotFolder + testName + "_" + driverType + "_" + timeString + ".png";
+            
+            screenshot.SaveAsFile(screenshotFileAndPlaceName, ScreenshotImageFormat.Png); 
         }
 
 

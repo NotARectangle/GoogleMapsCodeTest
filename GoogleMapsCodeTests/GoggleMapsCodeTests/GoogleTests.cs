@@ -14,7 +14,7 @@ namespace GoogleMapsCodeTests
         protected WebDriver WebDriver { get; set; } = null;
 
         private string driverpath = @"..\res\chromedriver.exe";
-
+        protected string driverType = "Chrome";
         private string BaseUrl { get; set; } = "https://www.google.com/maps";
 
         private string cookieSelector = "#yDmH0d > c-wiz > div > div > div > div.NIoIEf > div.G4njw > div.AIC7ge > div.CxJub > div.VtwTSb > form:nth-child(2)";
@@ -92,7 +92,12 @@ namespace GoogleMapsCodeTests
         {
             help.AddAndSendInput(landmarkInput);
 
+           
+
             Assert.IsTrue(help.IsAddressCorrect(landmarkAddress));
+
+            help.TakeScreenShot(driverType, "LandmarkAddresss");
+
         }
 
         ///<summary>

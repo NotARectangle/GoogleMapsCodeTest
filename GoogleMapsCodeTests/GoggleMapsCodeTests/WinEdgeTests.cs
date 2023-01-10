@@ -30,6 +30,8 @@ namespace GoogleMapsCodeTests
             WebDriver.Navigate().GoToUrl(BaseUrl);
             WebDriver.FindElement(By.CssSelector(cookieSelector)).Click();
 
+            driverpath = "Edge";
+
             help = new Helper(WebDriver);
         }
 
