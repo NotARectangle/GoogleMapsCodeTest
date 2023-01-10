@@ -79,9 +79,24 @@ namespace GoogleMapsCodeTests
         public void LandmarkInputTest()
         {
 
-            help.AddAndSendInput(landmarkInput);            
+            help.AddAndSendInput(landmarkInput);
 
-            Assert.IsTrue(help.IsOutputCorrect(landmarkOutput));
+            bool outcome = help.IsOutputCorrect(landmarkOutput);
+
+            try
+            {
+                //Wait for Page to load before taking screenshot
+                Thread.Sleep(400);
+
+                help.TakeScreenShot(driverType, "Landmark");           
+
+                Assert.IsTrue(outcome);
+
+            }
+            catch
+            {
+                Assert.IsTrue(outcome);
+            }
         }
 
         ///<summary>
@@ -90,13 +105,9 @@ namespace GoogleMapsCodeTests
         [Test]
         public void LandmarkInput_AddressTest()
         {
-            help.AddAndSendInput(landmarkInput);
-
-           
+            help.AddAndSendInput(landmarkInput);       
 
             Assert.IsTrue(help.IsAddressCorrect(landmarkAddress));
-
-            help.TakeScreenShot(driverType, "LandmarkAddresss");
 
         }
 
@@ -177,7 +188,23 @@ namespace GoogleMapsCodeTests
         {
             help.AddAndSendInput(streetAddressInput);
 
-            Assert.IsTrue(help.IsOutputCorrect(streetAdresssOutput));
+            bool outcome = help.IsOutputCorrect(streetAdresssOutput);
+
+            try
+            {
+                //Wait for Page to load before taking screenshot
+                Thread.Sleep(400);
+
+                help.TakeScreenShot(driverType, "StreetName");
+
+                Assert.IsTrue(outcome);
+
+            }
+            catch
+            {
+                Assert.IsTrue(outcome);
+            }
+
         }
 
         /// <summary>
@@ -220,8 +247,23 @@ namespace GoogleMapsCodeTests
         public void AreaInputTest()
         {
             help.AddAndSendInput(areaNameInput);
-            
-            Assert.IsTrue(help.IsOutputCorrect(areaNameOutput));
+
+            bool outcome = help.IsOutputCorrect(areaNameOutput);
+
+            try
+            {
+                //Wait for Page to load before taking screenshot
+                Thread.Sleep(400);
+
+                help.TakeScreenShot(driverType, "AreaName");
+
+                Assert.IsTrue(outcome);
+
+            }
+            catch
+            {
+                Assert.IsTrue(outcome);
+            }
         }
 
         ///<summary>
@@ -265,7 +307,23 @@ namespace GoogleMapsCodeTests
         {
             help.AddAndSendInput(countryNameInput);
 
-            Assert.IsTrue(help.IsOutputCorrect(countryNameInput));
+            bool outcome = help.IsOutputCorrect(coutryNameOutput);
+
+            try
+            {
+                //Wait for Page to load before taking screenshot
+                Thread.Sleep(400);
+
+                help.TakeScreenShot(driverType, "CountryName");
+
+                Assert.IsTrue(outcome);
+
+            }
+            catch
+            {
+                Assert.IsTrue(outcome);
+            }
+
         }
 
         /// <summary>
