@@ -177,8 +177,6 @@ namespace GoogleMapsCodeTests
         {
             help.AddAndSendInput(streetAddressInput);
 
-            //var outputname = WebDriver.FindElement(By.CssSelector(placeNameSelector));
-
             Assert.IsTrue(help.IsOutputCorrect(streetAdresssOutput));
         }
 

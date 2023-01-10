@@ -14,8 +14,6 @@ namespace GoogleMapsCodeTests
            
         private string driverpath = @"..\res\msedgedriver.exe";
 
-       // Helper help = null;
-
         private string BaseUrl { get; set; } = "https://www.google.com/maps";
 
         private string cookieSelector = "#yDmH0d > c-wiz > div > div > div > div.NIoIEf > div.G4njw > div.AIC7ge > div.CxJub > div.VtwTSb > form:nth-child(2)";
@@ -30,7 +28,7 @@ namespace GoogleMapsCodeTests
             WebDriver.Navigate().GoToUrl(BaseUrl);
             WebDriver.FindElement(By.CssSelector(cookieSelector)).Click();
 
-            driverpath = "Edge";
+            driverType = "Edge";
 
             help = new Helper(WebDriver);
         }
