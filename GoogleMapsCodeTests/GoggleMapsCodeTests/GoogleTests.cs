@@ -19,9 +19,7 @@ namespace GoogleMapsCodeTests
 
         private string cookieSelector = "#yDmH0d > c-wiz > div > div > div > div.NIoIEf > div.G4njw > div.AIC7ge > div.CxJub > div.VtwTSb > form:nth-child(2)";
 
-        private string placeNameSelector = "#QA0Szd > div > div > div.w6VYqd > div.bJzME.tTVLSc > div > div.e07Vkf.kA9KIf > div > div > div.TIHn2 > div.tAiQdd > div.lMbq3e > div:nth-child(1) > h1 > span:nth-child(1)";
-
-        private string landmarkInput = "Tower of Pisa";
+        private string landmarkInput = "Leaning Tower of Pisa";
         private string landmarkOutput = "Leaning Tower of Pisa";
         private string landmarkAddress = "Piazza del Duomo, 56126 Pisa PI";       
 
@@ -264,8 +262,6 @@ namespace GoogleMapsCodeTests
         {
             help.AddAndSendInput(countryNameInput);
 
-            var outputName = WebDriver.FindElement(By.CssSelector(placeNameSelector));
-
             Assert.IsTrue(help.IsOutputCorrect(countryNameInput));
         }
 
@@ -288,30 +284,7 @@ namespace GoogleMapsCodeTests
         {
             help.AddAndSendInput(countryNameInput);
 
-            string textOutputSelector = "#QA0Szd > div > div > div.w6VYqd > div.bJzME.tTVLSc > div > div.e07Vkf.kA9KIf > div > div ";
-
-            bool found = false;
-
-            try 
-            {            
-            string pageText = WebDriver.FindElement(By.CssSelector(textOutputSelector)).Text;          
-            
-
-            if (string.IsNullOrEmpty(pageText) != true)
-                {
-                    if(pageText.Contains("Quick facts"))
-                    {
-                        found = true;
-                    }
-                }
-
-            }
-            catch
-            {
-                found = false;
-            }
-
-            Assert.That(found);
+            Assert.That(help.DoesPageTextContain("Quick facts"));
         }
 
         /// <summary>
@@ -331,21 +304,10 @@ namespace GoogleMapsCodeTests
         [Test]
         public void MultiplePossibleOutcomesTest()
         {
-
             help.AddAndSendInput(mutipleOutcomesInput);
 
-            //Get results element
-            var resultsForPlacenameSelector = "#QA0Szd > div > div > div.w6VYqd > div.bJzME.tTVLSc > div > div.e07Vkf.kA9KIf > div > div > div.m6QErb.DxyBCb.kA9KIf.dS8AEf.ecceSd > div.m6QErb.DxyBCb.kA9KIf.dS8AEf.ecceSd";
-
-            var content = WebDriver.FindElement(By.CssSelector(resultsForPlacenameSelector)).Text;
-
-            //Get Text content count the number of times Place name is found in element
-            Regex goalRx = new Regex(mutipleOutcomesInput);
-
-            MatchCollection matches = goalRx.Matches(content);
-
             //Count of results should be more than one, since placename occurs more than once on map
-            Assert.IsTrue(matches.Count > 1);
+            Assert.IsTrue(help.CountOccuranceOnPage(mutipleOutcomesInput) > 1);
         }
 
         /// <summary>
@@ -381,8 +343,6 @@ namespace GoogleMapsCodeTests
 
             help.AddAndSendInput(inputString);
 
-            var outputname = WebDriver.FindElement(By.CssSelector(placeNameSelector));
-
             Assert.IsTrue(help.IsOutputCorrect(countryNameInput));
         }
         
@@ -393,8 +353,6 @@ namespace GoogleMapsCodeTests
         public void MisspelledInputTest()
         {
             help.AddAndSendInput(misspelledInput);
-
-            var outputname = WebDriver.FindElement(By.CssSelector(placeNameSelector));
 
             Assert.IsTrue(help.IsOutputCorrect(areaNameOutput));
         }
